@@ -1,0 +1,30 @@
+{
+  "name": "case341-project",
+  "version": "1.0.0",
+  "description": "API contactos para CSE341",
+  "homepage": "https://github.com/Kattniu/case341-project#readme",
+  "bugs": {
+    "url": "https://github.com/Kattniu/case341-project/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kattniu/case341-project.git"
+  },
+  "license": "ISC",
+  "author": "Katherine",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongodb": "^7.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
