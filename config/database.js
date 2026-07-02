@@ -5,6 +5,7 @@ require('dotenv').config();
 let database;
 
 // Initialize the database connection
+
 //Explicación rápida: initDb es como "encender" la conexión una sola vez cuando arranca el servidor.
 //getDb es como preguntar "dame la conexión que ya está encendida" desde cualquier otra parte de tu app, sin tener que reconectar cada vez.
 const initDb = (callback) => {
