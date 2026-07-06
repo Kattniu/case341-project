@@ -7,7 +7,7 @@ const { getDb } = require('../config/database');
 // GET todos los contactos
 router.get('/', async (req, res) => {
   try {
-    const db = getDb();
+    const db = getDb(); //Esto solo funciona porque hice initDb() en server.js antes de levantar el servidor
     const contacts = await db.collection('contacts').find().toArray();
     res.status(200).json(contacts);
   } catch (err) {
@@ -28,6 +28,77 @@ router.get('/:id', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// POST new contact
+router.post ('/', async (req, res) => {
+  try {
+    const db = getDb(); 
+
+    const result = await db.connection("contacts").insertOne(req.body);
+    res.status(201).json(result);
+  }catch(err){
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PUT update contact by id
+router.put('/:id', async (req, res) =>{
+  try {
+    const db= getDb();
+    const contactId= er.params.id;
+    const updatedContact= req.body; 
+
+    const result= await db.collection("contacts").updateOne(
+      { _id: new ObjectId(contactId) },
+      { $set: updatedContact }
+    );
+    if (result.$set.matchedCount === 0) {
+      return res.status(404).json({ error: 'Contact not found' });
+    }
+    res.status(200).json({ message: 'Contact updated successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  } 
 });
 
 module.exports = router;
