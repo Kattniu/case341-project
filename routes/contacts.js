@@ -32,10 +32,22 @@ router.get('/:id', async (req, res) => {
 
 // POST new contact
 router.post ('/', async (req, res) => {
+  //1 sacar los datos del body, esto se llama desestructuracion en Js 
+  const {firstName, lastName, email, favoriteColor, birthday } = req.body;
+  //2 Validar que todos los campos existan 
+  if (!firstName || !lastName || !email || !favoriteColor || !birthday) {
+    return res.status(400).json({ error: 'All fields are required'});
+  }
+
   try {
     const db = getDb(); 
-
-    const result = await db.connection("contacts").insertOne(req.body);
+    const result = await db.collection("contacts").insertOne({
+      firstName,
+      lastName,
+      email,
+      favoriteColor,
+      birthday
+    });
     res.status(201).json(result);
   }catch(err){
     res.status(500).json({ error: err.message });
@@ -56,13 +68,28 @@ router.put('/:id', async (req, res) =>{
       { _id: new ObjectId(contactId) },
       { $set: updatedContact }
     );
-    if (result.$set.matchedCount === 0) {
+    if (result.matchedCount === 0) {
       return res.status(404).json({ error: 'Contact not found' });
     }
     res.status(200).json({ message: 'Contact updated successfully' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   } 
+});
+
+// DELETE contact by id
+router.delete('/:id', async (req, res) => {
+  try {
+    const db = getDb();
+    const contactId = new ObjectId(req.params.id);
+    const result = await db.collection("contacts").deleteOne({ _id: contactId });
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: 'Contact not found' });
+    }
+    res.status(200).json({ message: 'Contact deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 module.exports = router;
