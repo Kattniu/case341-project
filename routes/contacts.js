@@ -1,6 +1,6 @@
 //aqui van dos endpoints GET    
-const express = require('express');
-const router = express.Router();
+const express = require('express'); //importa express
+const router = express.Router();// creamos un router
 const { ObjectId } = require('mongodb');
 const { getDb } = require('../config/database');
 
@@ -30,45 +30,6 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // POST new contact
 router.post ('/', async (req, res) => {
   try {
@@ -82,10 +43,13 @@ router.post ('/', async (req, res) => {
 });
 
 // PUT update contact by id
+//Cuando haces PUT usualmente debes responder dos preguntas:
 router.put('/:id', async (req, res) =>{
   try {
     const db= getDb();
-    const contactId= er.params.id;
+    //que contacto quiero actualizar? 
+    const contactId= req.params.id;
+    //con que datos actualizarlo?
     const updatedContact= req.body; 
 
     const result= await db.collection("contacts").updateOne(
