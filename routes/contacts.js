@@ -1,6 +1,6 @@
-//aqui van dos endpoints GET    
+//aqui van dos endpoints GET
 const express = require('express'); //importa express
-const router = express.Router();// creamos un router
+const router = express.Router(); // creamos un router
 const { ObjectId } = require('mongodb');
 const { getDb } = require('../config/database');
 
@@ -31,50 +31,49 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST new contact
-router.post ('/', async (req, res) => {
-  //1 sacar los datos del body, esto se llama desestructuracion en Js 
-  const {firstName, lastName, email, favoriteColor, birthday } = req.body;
-  //2 Validar que todos los campos existan 
+router.post('/', async (req, res) => {
+  //1 sacar los datos del body, esto se llama desestructuracion en Js
+  const { firstName, lastName, email, favoriteColor, birthday } = req.body;
+  //2 Validar que todos los campos existan
   if (!firstName || !lastName || !email || !favoriteColor || !birthday) {
-    return res.status(400).json({ error: 'All fields are required'});
+    return res.status(400).json({ error: 'All fields are required' });
   }
 
   try {
-    const db = getDb(); 
-    const result = await db.collection("contacts").insertOne({
+    const db = getDb();
+    const result = await db.collection('contacts').insertOne({
       firstName,
       lastName,
       email,
       favoriteColor,
-      birthday
+      birthday,
     });
-    res.status(201).json(result);
-  }catch(err){
+    res.status(201).json({ id: result.insertedId });
+  } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
 // PUT update contact by id
 //Cuando haces PUT usualmente debes responder dos preguntas:
-router.put('/:id', async (req, res) =>{
+router.put('/:id', async (req, res) => {
   try {
-    const db= getDb();
-    //que contacto quiero actualizar? 
-    const contactId= req.params.id;
+    const db = getDb();
+    //que contacto quiero actualizar?
+    const contactId = req.params.id;
     //con que datos actualizarlo?
-    const updatedContact= req.body; 
+    const updatedContact = req.body;
 
-    const result= await db.collection("contacts").updateOne(
-      { _id: new ObjectId(contactId) },
-      { $set: updatedContact }
-    );
+    const result = await db
+      .collection('contacts')
+      .updateOne({ _id: new ObjectId(contactId) }, { $set: updatedContact });
     if (result.matchedCount === 0) {
       return res.status(404).json({ error: 'Contact not found' });
     }
     res.status(200).json({ message: 'Contact updated successfully' });
   } catch (err) {
     res.status(500).json({ error: err.message });
-  } 
+  }
 });
 
 // DELETE contact by id
@@ -82,7 +81,9 @@ router.delete('/:id', async (req, res) => {
   try {
     const db = getDb();
     const contactId = new ObjectId(req.params.id);
-    const result = await db.collection("contacts").deleteOne({ _id: contactId });
+    const result = await db
+      .collection('contacts')
+      .deleteOne({ _id: contactId });
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: 'Contact not found' });
     }
