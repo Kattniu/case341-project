@@ -5,7 +5,7 @@
     "description": "API for storing and retrieving contact information",
     "version": "1.0.0"
   },
-  "host": "https://case341-contacts.onrender.com",
+  "host": "case341-contacts.onrender.com",
   "basePath": "/",
   "schemes": [
     "https"
