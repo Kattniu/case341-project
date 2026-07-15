@@ -56,7 +56,19 @@ router.post('/', async (req, res) => {
 
 // PUT update contact by id
 //Cuando haces PUT usualmente debes responder dos preguntas:
-router.put('/:id', async (req, res) => {
+/*
+  #swagger.parameters['body'] = {
+    in: 'body',
+    schema: {
+      firstName: 'string',
+      lastName: 'string',
+      email: 'string',
+      favoriteColor: 'string',
+      birthday: 'string'
+    }
+  }
+*/
+router.put('/:id', async (req, res) => { 
   try {
     const db = getDb();
     //que contacto quiero actualizar?
