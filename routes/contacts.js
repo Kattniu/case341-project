@@ -56,29 +56,23 @@ router.post('/', async (req, res) => {
 
 // PUT update contact by id
 //Cuando haces PUT usualmente debes responder dos preguntas:
-/*
-  #swagger.parameters['body'] = {
-    in: 'body',
-    schema: {
-      firstName: 'string',
-      lastName: 'string',
-      email: 'string',
-      favoriteColor: 'string',
-      birthday: 'string'
-    }
+// PUT update contact by id
+router.put('/:id', async (req, res) => {
+  //1 sacar los datos del body, igual que en POST
+  const { firstName, lastName, email, favoriteColor, birthday } = req.body;
+  //2 Validar que todos los campos existan
+  if (!firstName || !lastName || !email || !favoriteColor || !birthday) {
+    return res.status(400).json({ error: 'All fields are required' });
   }
-*/
-router.put('/:id', async (req, res) => { 
+
   try {
     const db = getDb();
-    //que contacto quiero actualizar?
     const contactId = req.params.id;
-    //con que datos actualizarlo?
-    const updatedContact = req.body;
 
-    const result = await db
-      .collection('contacts')
-      .updateOne({ _id: new ObjectId(contactId) }, { $set: updatedContact });
+    const result = await db.collection('contacts').updateOne(
+      { _id: new ObjectId(contactId) },
+      { $set: { firstName, lastName, email, favoriteColor, birthday } }
+    );
     if (result.matchedCount === 0) {
       return res.status(404).json({ error: 'Contact not found' });
     }
